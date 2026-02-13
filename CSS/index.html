@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html ng-app="expenseApp">
+<head>
+    <title>AngularJS Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="app.js"></script>
+</head>
+
+<body ng-controller="ExpenseController">
+
+<div class="container">
+    <h2>💰 Expense Tracker - AngularJS</h2>
+
+    <form ng-submit="addTransaction()" name="expenseForm">
+
+        <input type="text" placeholder="Description"
+               ng-model="newTransaction.description" required>
+
+        <input type="number" placeholder="Amount"
+               ng-model="newTransaction.amount" required>
+
+        <select ng-model="newTransaction.type" required>
+            <option value="">Select Type</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+        </select>
+
+        <button type="submit">Add</button>
+    </form>
+
+    <h3>Total Balance: ₹ {{ getBalance() }}</h3>
+
+    <input type="text" placeholder="Search"
+           ng-model="searchText">
+
+    <table>
+        <tr>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Type</th>
+            <th>Action</th>
+        </tr>
+
+        <tr ng-repeat="t in transactions | filter:searchText"
+            ng-class="{'income': t.type=='income', 'expense': t.type=='expense'}">
+
+            <td>{{ t.description }}</td>
+            <td>₹ {{ t.amount }}</td>
+            <td>{{ t.type | uppercase }}</td>
+            <td><button ng-click="deleteTransaction($index)">Delete</button></td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
